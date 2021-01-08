@@ -14,7 +14,7 @@ import NextLink from 'next/link'
 import { useTodos, updateTodos } from 'lib'
 import { useMutation } from 'react-query'
 
-const MotionBox = chakra(motion.li)
+const MotionListItem = chakra(motion.li)
 
 export default function Home() {
 	const [todos, setTodos] = useState<Array<Todo>>([])
@@ -94,7 +94,7 @@ function TodoItem({ todo, index, setPositions, moveItem, updateServerSideData }:
 	const ref = useMeasurePosition((pos) => setPositions(index, pos))
 
 	return (
-		<MotionBox
+		<MotionListItem
 			layout
 			p={3}
 			my={2}
@@ -130,6 +130,6 @@ function TodoItem({ todo, index, setPositions, moveItem, updateServerSideData }:
 				borderRadius='13px'
 				width='60px'
 			/>
-		</MotionBox>
+		</MotionListItem>
 	)
 }
