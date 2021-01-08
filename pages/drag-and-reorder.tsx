@@ -14,6 +14,7 @@ import NextLink from 'next/link'
 import { useTodos, updateTodos } from 'lib'
 import { useMutation } from 'react-query'
 
+const MotionBox = chakra(motion.div)
 const MotionListItem = chakra(motion.li)
 
 export default function Home() {
@@ -56,7 +57,13 @@ export default function Home() {
 					</NextLink>
 				</Flex>
 
-				<UnorderedList ml={6} mr={6} py={3}>
+				<UnorderedList
+					ml={{ base: 6, md: 'auto' }}
+					mr={{ base: 6, md: 'auto' }}
+					maxW={{ base: '100%', md: '50%' }}
+					listStyleType='none'
+					py={3}
+				>
 					{todos?.map((todo, index) => (
 						<TodoItem
 							todo={todo}
@@ -83,9 +90,9 @@ type TodoItemProps = {
 	updateServerSideData: () => Promise<void>
 }
 
-const onTop = { zIndex: 1 }
+const onTop = { zIndex: 3 }
 const flat = {
-	zIndex: 0,
+	zIndex: 1,
 	transition: { delay: 0.3 }
 }
 
@@ -94,42 +101,40 @@ function TodoItem({ todo, index, setPositions, moveItem, updateServerSideData }:
 	const ref = useMeasurePosition((pos) => setPositions(index, pos))
 
 	return (
-		<MotionListItem
-			layout
-			p={3}
-			my={2}
-			ref={ref}
-			initial={false}
-			animate={isDragging ? onTop : flat}
-			borderBottom='1px solid'
-			borderColor='gray.200'
-			display='flex'
-			alignItems='flex-start'
-			justifyContent='space-between'
-			bgColor={colorsReg[todo.id]}
-			borderRadius='10px'
-			whileHover={{ scale: 1.03 }}
-			whileTap={{ scale: 1.12 }}
-			drag='y'
-			onDragStart={() => setIsDragging(true)}
-			onDragEnd={() => {
-				setIsDragging(false)
-				updateServerSideData()
-			}}
-			onViewportBoxUpdate={(_viewportBox, delta) => {
-				isDragging && moveItem(index, delta.y.translate)
-			}}
-		>
-			<Box>
-				<Heading size='sm'>{todo.title}</Heading>
-				<Text>{todo.description}</Text>
-			</Box>
-			<Image
-				src={todo.userAvatarUrl}
-				fallbackSrc={todo.userAvatarUrl}
-				borderRadius='13px'
-				width='60px'
-			/>
+		<MotionListItem p={0} initial={false} animate={isDragging ? onTop : flat}>
+			<MotionBox
+				layout
+				p={3}
+				my={2}
+				ref={ref}
+				display='flex'
+				alignItems='flex-start'
+				justifyContent='space-between'
+				bgColor={colorsReg[todo.id]}
+				borderRadius='10px'
+				whileHover={{ scale: 1.03, cursor: 'grab' }}
+				whileTap={{ scale: 1.12, cursor: 'grabbing' }}
+				drag='y'
+				onDragStart={() => setIsDragging(true)}
+				onDragEnd={() => {
+					setIsDragging(false)
+					updateServerSideData()
+				}}
+				onViewportBoxUpdate={(_viewportBox, delta) => {
+					isDragging && moveItem(index, delta.y.translate)
+				}}
+			>
+				<Box>
+					<Heading size='sm'>{todo.title}</Heading>
+					<Text>{todo.description}</Text>
+				</Box>
+				<Image
+					src={todo.userAvatarUrl}
+					fallbackSrc={todo.userAvatarUrl}
+					borderRadius='13px'
+					width='60px'
+				/>
+			</MotionBox>
 		</MotionListItem>
 	)
 }

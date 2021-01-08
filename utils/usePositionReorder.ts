@@ -1,33 +1,10 @@
-import { useState, useRef } from 'react'
 import { clamp, distance } from 'popmotion'
-import move from 'array-move'
-
 export interface Position {
 	top: number
 	height: number
 }
 
-export function usePositionReorder(initialState) {
-	const [order, setOrder] = useState(initialState)
-
-	// We need to collect an array of height and position data for all of this component's
-	// `Item` children, so we can later us that in calculations to decide when a dragging
-	// `Item` should swap places with its siblings.
-	const positions = useRef([]).current
-	const updatePosition = (i, offset) => (positions[i] = offset)
-
-	// Find the ideal index for a dragging item based on its position in the array, and its
-	// current drag offset. If it's different to its current index, we swap this item with that
-	// sibling.
-	const updateOrder = (i, dragOffset) => {
-		const targetIndex = findIndex(i, dragOffset, positions)
-		if (targetIndex !== i) setOrder(move(order, i, targetIndex))
-	}
-
-	return [order, updatePosition, updateOrder]
-}
-
-const buffer = 5
+const buffer = 80
 
 export const findIndex = (i, yOffset, positions) => {
 	let target = i
