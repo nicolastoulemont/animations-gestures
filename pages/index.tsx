@@ -1,5 +1,3 @@
-// https://codesandbox.io/s/framer-motion-drag-to-reorder-pkm1k?file=/src/Example.tsx:3400-3507
-
 import Head from 'next/head'
 import { Box, chakra, UnorderedList, Link, Heading, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
