@@ -36,8 +36,8 @@ let todos: Array<Todo> = [
 		id: 3,
 		position: 3,
 		complete: false,
-		title: 'Réussir a animer ces items',
-		description: 'Parce que pour le moment ça veut pas',
+		title: 'Lancer une lessive',
+		description: 'Pour avoir des affaires propres',
 		userAvatarUrl: 'https://i.pravatar.cc/150?img=4'
 	}
 ]
